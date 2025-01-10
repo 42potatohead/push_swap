@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 19:27:28 by ataan             #+#    #+#             */
-/*   Updated: 2025/01/10 19:46:12 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/01/10 20:31:20 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void algo3(t_stack *a, t_stack *b)
     int rotated = 0;
 
     // Single pass partition
-    while (a->top && rotated < 2 * ft_lstsize(a->top))
+    while (a->top && rotated < 1 * ft_lstsize(a->top))
     {
         if (*(int *)a->top->content < pivot)
         {
@@ -236,8 +236,24 @@ void algo(t_stack *a, t_stack *b)
         // }
     }
 	push(a, b, 'b');
-    while(b->top != NULL && b->top->next != NULL)
+    int i = 1;
+    int start = INT_MAX;
+    // printf("start = %d\n", start);
+    r_rotate(b,"rrb", 1);
+    while(b->top != NULL && b->top->next != NULL && *(int *)b->top->content != start)
     {
+        printf("top = %d\n", *(int *)b->top->content);
+        if((*(int *)b->top->content - *(int *)b->top->next->content) > -50)
+        {
+            if (i = 1)
+            {
+                start = *(int *)b->top->content;
+                printf("start = %d\n", start);
+                    i = 0;
+            }
+            r_rotate(b,"rrb", 1);
+
+        }
         // if(*(int *)b->top->content < min)
         // {
         //     rotate(b, "rrb", 1);
@@ -254,9 +270,10 @@ void algo(t_stack *a, t_stack *b)
         //     // min = *(int *)b->top->content;
         // }
         if (*(int *)b->top->content > *(int *)b->top->next->content)
-            swap(b, "sb", 1);
-        else
-            push(a, b, 'a');
+           { swap(b, "sb", 1);
+            start = *(int *)b->top->content;}
+        push(a, b, 'a');
+        start = *(int *)b->top->content;
         // if (a->top != NULL && (*(int *)b->top->content < *(int *)a->top->content))
         // {
         //     // printf("<push_swap>\n");
@@ -265,7 +282,8 @@ void algo(t_stack *a, t_stack *b)
         //     // printf("</push_swap>\n");
         // }
         if (a->top != NULL && a->top->next != NULL && *(int *)a->top->content < *(int *)a->top->next->content)
-            swap(a, "sa", 1);
+           { swap(a, "sa", 1);
+        start = *(int *)b->top->content;}
     }
     push(a, b, 'a');
 	if (is_sorted(a)) // Check if already sorted
@@ -281,7 +299,7 @@ int main(int ac, char **av)
 
     check_args(ac, av, &a);
 
-    algo3(&a,&b);
+    algo(&a,&b);
     // if (!is_sorted(&a))
         // algo2(&a,&b);
                 printf("stack a from top = ");
