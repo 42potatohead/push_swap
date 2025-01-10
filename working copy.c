@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 19:27:28 by ataan             #+#    #+#             */
-/*   Updated: 2025/01/10 19:46:12 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/01/10 19:42:18 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,11 +137,13 @@ int is_sorted(t_stack *stack) {
         return (1); // Empty or single element stack is considered sorted
 
     current = stack->top;
-    int max = *(int *)current->content;
     while (current->next) {
-        if (*(int *)current->content > max )
+        printf("is %d less than %d? %d\n", *(int *)current->content, *(int *)current->next->content, *(int *)current->content < *(int *)current->next->content );
+        if (*(int *)current->content < *(int *)current->next->content )
+        {
+            printf("returning 0\n");
             return (0); // Found pair out of order
-        max = *(int *)current->content;
+        }
         current = current->next;
     }
     return (1); // Stack is sorted
@@ -269,9 +271,12 @@ void algo(t_stack *a, t_stack *b)
     }
     push(a, b, 'a');
 	if (is_sorted(a)) // Check if already sorted
+    {
+        printf("should be sorted2\n");
         return;
+    }
 	else
-		algo(a,b);
+		algo(b,a);
 }
 
 int main(int ac, char **av)
@@ -281,7 +286,7 @@ int main(int ac, char **av)
 
     check_args(ac, av, &a);
 
-    algo3(&a,&b);
+    algo(&a,&b);
     // if (!is_sorted(&a))
         // algo2(&a,&b);
                 printf("stack a from top = ");
