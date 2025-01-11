@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 19:27:28 by ataan             #+#    #+#             */
-/*   Updated: 2025/01/10 20:31:20 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/01/11 19:23:44 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,21 +130,40 @@ void del(void *content)
         free(content);  // Free the dynamically allocated content
 }
 
-int is_sorted(t_stack *stack) {
+// int is_sorted(t_stack *stack) {
+//     t_list *current;
+
+//     if (!stack->top || !stack->top->next)
+//         return (1); // Empty or single element stack is considered sorted
+
+//     current = stack->top;
+//     int max = *(int *)current->content;
+//     while (current->next) {
+//         if (*(int *)current->content > max )
+//             return (0); // Found pair out of order
+//         max = *(int *)current->content;
+//         current = current->next;
+//     }
+//     return (1); // Stack is sorted
+// }
+int is_sorted(t_stack *a)
+{
+    if (!a->top || !a->top->next)
+        return (1);
+
     t_list *current;
+    current = a->top;
 
-    if (!stack->top || !stack->top->next)
-        return (1); // Empty or single element stack is considered sorted
-
-    current = stack->top;
-    int max = *(int *)current->content;
-    while (current->next) {
-        if (*(int *)current->content > max )
-            return (0); // Found pair out of order
-        max = *(int *)current->content;
+    while (current->next != NULL)
+    {
+        if (*(int *)current->content < *(int *)current->next->content)
+        {
+            printf("not sorted\n");
+            return (0);  // Not sorted
+        }
         current = current->next;
     }
-    return (1); // Stack is sorted
+    return (1);  // Sorted
 }
 
 void sort_small(t_stack *a)
@@ -155,78 +174,83 @@ void sort_small(t_stack *a)
         swap(a, "sa", 1);
 }
 
-void algo3(t_stack *a, t_stack *b)
-{
-    if (is_sorted(a) || !a->top || !a->top->next)
-        return;
+// void algo3(t_stack *a, t_stack *b)
+// {
+//     if (is_sorted(a) || !a->top || !a->top->next)
+//         return;
 
-    // Handle 2-3 elements
-    if (!a->top->next->next || !a->top->next->next->next)
-    {
-        sort_small(a);
-        return;
-    }
+//     // Handle 2-3 elements
+//     if (!a->top->next->next || !a->top->next->next->next)
+//     {
+//         sort_small(a);
+//         return;
+//     }
 
-    // Partition phase - non recursive
-    int pivot = *(int *)a->top->content;
-    int pushed = 0;
-    int rotated = 0;
+//     // Partition phase - non recursive
+//     int pivot = *(int *)a->top->content;
+//     int pushed = 0;
+//     int rotated = 0;
 
-    // Single pass partition
-    while (a->top && rotated < 1 * ft_lstsize(a->top))
-    {
-        if (*(int *)a->top->content < pivot)
-        {
-            push(a, b, 'b');
-            pushed++;
-        }
-        else
-        {
-            rotate(a, "ra", 1);
-            rotated++;
-        }
+//     // Single pass partition
+//     while (a->top && rotated < 1 * ft_lstsize(a->top))
+//     {
+//         if (*(int *)a->top->content < pivot)
+//         {
+//             push(a, b, 'b');
+//             pushed++;
+//         }
+//         else
+//         {
+//             rotate(a, "ra", 1);
+//             rotated++;
+//         }
 
-        // Keep B sorted
-        if (b->top && b->top->next &&
-            *(int *)b->top->content < *(int *)b->top->next->content)
-            swap(b, "sb", 1);
-    }
+//         // Keep B sorted
+//         if (b->top && b->top->next &&
+//             *(int *)b->top->content < *(int *)b->top->next->content)
+//             swap(b, "sb", 1);
+//     }
 
-    // Sort remaining A elements
-    sort_small(a);
+//     // Sort remaining A elements
+//     sort_small(a);
 
-    // Merge phase - non recursive
-    while (b->top)
-    {
-        if (!a->top || *(int *)b->top->content < *(int *)a->top->content)
-            push(a, b, 'a');
-        else if (a->top)
-            rotate(a, "ra", 1);
-    }
+//     // Merge phase - non recursive
+//     while (b->top)
+//     {
+//         if (!a->top || *(int *)b->top->content < *(int *)a->top->content)
+//             push(a, b, 'a');
+//         else if (a->top)
+//             rotate(a, "ra", 1);
+//     }
 
-    // Final cleanup if needed
-    if (!is_sorted(a))
-        algo(a,b);
-}
+//     // Final cleanup if needed
+//     if (!is_sorted(a))
+//         algo(a,b);
+// }
 
 void algo(t_stack *a, t_stack *b)
 {
 	int max = 0;
 	int min = INT_MAX;
+	int start = *(int *)a->top->content;
 	if (is_sorted(a)) // Check if already sorted
-    {
         return;
-    }
     while(a->top != NULL && a->top->next != NULL)
     {
 		if (*(int *)a->top->content > max)
 			max = *(int *)a->top->content;
 		if (*(int *)a->top->content < min)
 			min = *(int *)a->top->content;
+        max = 3;
 		// if(*(int *)a->top->content > (*(int*)a->top->next->content/3))
 		// 	rotate(a, "ra", 1);
         if (*(int *)a->top->content < *(int *)a->top->next->content)
             swap(a, "sa", 1);
+        else if(is_sorted(a))
+        {
+            printf("sorted yaay\n");
+            break;
+        }
         else
             push(a, b, 'b');
         // if(b->top->next != NULL)
@@ -235,25 +259,9 @@ void algo(t_stack *a, t_stack *b)
                 swap(b, "sb", 1);
         // }
     }
-	push(a, b, 'b');
-    int i = 1;
-    int start = INT_MAX;
-    // printf("start = %d\n", start);
-    r_rotate(b,"rrb", 1);
-    while(b->top != NULL && b->top->next != NULL && *(int *)b->top->content != start)
+	// push(a, b, 'b');
+    while(b->top != NULL && b->top->next != NULL)
     {
-        printf("top = %d\n", *(int *)b->top->content);
-        if((*(int *)b->top->content - *(int *)b->top->next->content) > -50)
-        {
-            if (i = 1)
-            {
-                start = *(int *)b->top->content;
-                printf("start = %d\n", start);
-                    i = 0;
-            }
-            r_rotate(b,"rrb", 1);
-
-        }
         // if(*(int *)b->top->content < min)
         // {
         //     rotate(b, "rrb", 1);
@@ -270,10 +278,9 @@ void algo(t_stack *a, t_stack *b)
         //     // min = *(int *)b->top->content;
         // }
         if (*(int *)b->top->content > *(int *)b->top->next->content)
-           { swap(b, "sb", 1);
-            start = *(int *)b->top->content;}
-        push(a, b, 'a');
-        start = *(int *)b->top->content;
+            swap(b, "sb", 1);
+        else
+            push(a, b, 'a');
         // if (a->top != NULL && (*(int *)b->top->content < *(int *)a->top->content))
         // {
         //     // printf("<push_swap>\n");
@@ -282,15 +289,16 @@ void algo(t_stack *a, t_stack *b)
         //     // printf("</push_swap>\n");
         // }
         if (a->top != NULL && a->top->next != NULL && *(int *)a->top->content < *(int *)a->top->next->content)
-           { swap(a, "sa", 1);
-        start = *(int *)b->top->content;}
+            swap(a, "sa", 1);
     }
     push(a, b, 'a');
 	if (is_sorted(a)) // Check if already sorted
         return;
-	else
-		algo(a,b);
+	// else
+	// 	algo(a,b);
 }
+
+
 
 int main(int ac, char **av)
 {
@@ -300,8 +308,6 @@ int main(int ac, char **av)
     check_args(ac, av, &a);
 
     algo(&a,&b);
-    // if (!is_sorted(&a))
-        // algo2(&a,&b);
                 printf("stack a from top = ");
                 print_stack(&a);
                 printf("stack b from top = ");

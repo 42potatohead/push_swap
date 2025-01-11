@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 16:18:05 by ataan             #+#    #+#             */
-/*   Updated: 2025/01/10 19:07:07 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/01/11 15:54:36 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,5 @@ void rr(t_stack *a, t_stack *b);
 void swap(t_stack *stack_x, char *op,int flag);
 void ss(t_stack *a, t_stack *b);
 void algo(t_stack *a, t_stack *b);
-void algo3(t_stack *a, t_stack *b);
 
 #endif
