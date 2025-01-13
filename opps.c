@@ -4,7 +4,7 @@ void swap(t_stack *stack_x, char *op,int flag)
 {
     if (!stack_x->top || !stack_x->top->next)
         return;
-    if (flag = 1)
+    if (flag == 1)
         printf("%s\n", op);
     void *temp;
     temp = stack_x->top->content;
