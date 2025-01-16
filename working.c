@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 19:27:28 by ataan             #+#    #+#             */
-/*   Updated: 2025/01/13 20:47:42 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:17:46 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,13 +166,13 @@ int is_sorted(t_stack *a)
     return (1);  // Sorted
 }
 
-void sort_small(t_stack *a)
-{
-    if (!a->top || !a->top->next)
-        return;
-    if (*(int *)a->top->content > *(int *)a->top->next->content)
-        swap(a, "sa", 1);
-}
+// void sort_small(t_stack *a)
+// {
+//     if (!a->top || !a->top->next)
+//         return;
+//     if (*(int *)a->top->content > *(int *)a->top->next->content)
+//         swap(a, "sa", 1, data);
+// }
 
 // void algo3(t_stack *a, t_stack *b)
 // {
@@ -228,7 +228,7 @@ void sort_small(t_stack *a)
 //         algo(a,b);
 // }
 
-void algo(t_stack *a, t_stack *b)
+void algo(t_stack *a, t_stack *b, t_data *data)
 {
 	int max = 100;
 	int min = INT_MAX;
@@ -243,57 +243,87 @@ void algo(t_stack *a, t_stack *b)
 		// 	min = *(int *)a->top->content;
         // max = 3;
 		if(*(int *)a->top->content < (*(int*)a->top->next->content/3))
-			rotate(a, "ra", 1);
+			rotate(a, "ra", 1, data);
         if (*(int *)a->top->content < *(int *)a->top->next->content)
-            swap(a, "sa", 1);
+            swap(a, "sa", 1, data);
         else if(is_sorted(a))
         {
             break;
         }
         // else
-            push(a, b, 'b');
+            push(a, b, 'b', data);
         // if(b->top->next != NULL)
         // {
             if (b->top != NULL && b->top->next != NULL && *(int *)b->top->content > *(int *)b->top->next->content)
-                swap(b, "sb", 1);
+                swap(b, "sb", 1, data);
         // }
     }
 	// push(a, b, 'b');
     while(b->top != NULL && b->top->next != NULL)
     {
         if(*(int *)b->top->content > (*(int *)b->top->next->content + 30))
-            rotate(b, "rb", 1);
+            rotate(b, "rb", 1, data);
         // if(*(int *)b->top->content > 50)
         //     rotate(b, "rb", 1);
         if (*(int *)b->top->content > *(int *)b->top->next->content)
-            swap(b, "sb", 1);
-        // else
-            push(a, b, 'a');
+            swap(b, "sb", 1, data);
+        else if(b->top == NULL)
+            break;
+        push(a, b, 'a', data);
         if (a->top != NULL && a->top->next != NULL && *(int *)a->top->content < *(int *)a->top->next->content)
-            swap(a, "sa", 1);
+            swap(a, "sa", 1, data);
     }
-    push(a, b, 'a');
+    push(a, b, 'a', data);
 	if (is_sorted(a))
         return;
 	else
-		algo(a,b);
+		algo(a,b, data);
 }
 
+void post_processing(t_data *data)
+{
+    char *before;
+    char *after;
+    char *start;
 
+    start = ft_strnstr(data->operations, "sa\nsb",ft_strlen(data->operations));
+    before = ft_substr(data->operations, 0, (start- data->operations));
+    before = ft_strjoin(before, "ss");
+    after = ft_substr(data->operations, (start- data->operations) + 5, (ft_strlen(data->operations) - (start- data->operations) + 5));
+    data->operations = ft_strjoin(before, after);
+    if(ft_strnstr(data->operations,"sb\nsa", ft_strlen(data->operations)) == 0)
+    {
+        return;
+    }
+    start = ft_strnstr(data->operations, "sb\nsa",ft_strlen(data->operations));
+    before = ft_substr(data->operations, 0, (start- data->operations));
+    before = ft_strjoin(before, "ss");
+    after = ft_substr(data->operations, (start- data->operations) + 5, (ft_strlen(data->operations) - (start- data->operations) + 5));
+    data->operations = ft_strjoin(before, after);
+    if(ft_strnstr(data->operations,"sa\nsb", ft_strlen(data->operations)) == 0)
+    {
+        return;
+        }
+    post_processing(data);
+}
 
 int main(int ac, char **av)
 {
     t_stack a = {NULL};
     t_stack b = {NULL};
+    t_data data;
 
+    int i = 0;
+    data.operations = ft_strdup("");
     check_args(ac, av, &a);
 
-    algo(&a,&b);
+    algo(&a,&b, &data);
+    post_processing(&data);
+    printf("%s",data.operations);
                 printf("stack a from top = ");
                 print_stack(&a);
                 printf("stack b from top = ");
                 print_stack(&b);
-
     ft_lstclear(&b.top, del);
     ft_lstclear(&a.top, del);
 }
