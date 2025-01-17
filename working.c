@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 19:27:28 by ataan             #+#    #+#             */
-/*   Updated: 2025/01/16 17:17:46 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/01/17 21:09:40 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,20 +228,18 @@ int is_sorted(t_stack *a)
 //         algo(a,b);
 // }
 
+
+// get max and min before algo
+
 void algo(t_stack *a, t_stack *b, t_data *data)
 {
 	int max = 100;
-	int min = INT_MAX;
+	int min = 1;
 	int start = *(int *)a->top->content;
 	if (is_sorted(a)) // Check if already sorted
         return;
     while(a->top != NULL && a->top->next != NULL)
     {
-		// if (*(int *)a->top->content > max)
-		// 	max = *(int *)a->top->content;
-		// if (*(int *)a->top->content < min)
-		// 	min = *(int *)a->top->content;
-        // max = 3;
 		if(*(int *)a->top->content < (*(int*)a->top->next->content/3))
 			rotate(a, "ra", 1, data);
         if (*(int *)a->top->content < *(int *)a->top->next->content)
@@ -258,26 +256,36 @@ void algo(t_stack *a, t_stack *b, t_data *data)
                 swap(b, "sb", 1, data);
         // }
     }
-	// push(a, b, 'b');
-    while(b->top != NULL && b->top->next != NULL)
-    {
-        if(*(int *)b->top->content > (*(int *)b->top->next->content + 30))
-            rotate(b, "rb", 1, data);
-        // if(*(int *)b->top->content > 50)
-        //     rotate(b, "rb", 1);
-        if (*(int *)b->top->content > *(int *)b->top->next->content)
-            swap(b, "sb", 1, data);
-        else if(b->top == NULL)
-            break;
-        push(a, b, 'a', data);
-        if (a->top != NULL && a->top->next != NULL && *(int *)a->top->content < *(int *)a->top->next->content)
-            swap(a, "sa", 1, data);
-    }
-    push(a, b, 'a', data);
-	if (is_sorted(a))
-        return;
-	else
-		algo(a,b, data);
+    push(a, b, 'b', data);
+                printf("stack b from top = ");
+                print_stack(b);
+    // while(b->top != NULL)
+    // {
+    //     // Check if current b->top should be inserted at current position in a
+    //     if (*(int *)b->top->content > *(int *)a->top->content)
+    //     {
+    //         push(a, b, 'a', data);
+    //         continue;
+    //     }
+
+    //     // If we have more than one element in b, check if next element is better
+    //     if (b->top->next != NULL &&
+    //         *(int *)b->top->next->content > *(int *)b->top->content)
+    //     {
+    //         swap(b, "sb", 1, data);
+    //         continue;
+    //     }
+
+    //     // If no better option, rotate a
+    //     rotate(a, "ra", 1, data);
+    //     printf("rt");
+    // }
+    // push(a, b, 'a', data);
+                printf("stack a from top = ");
+                print_stack(a);
+    // Final cleanup if needed
+    // if (!is_sorted(a))
+    //     algo(a, b, data);
 }
 
 void post_processing(t_data *data)
