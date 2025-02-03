@@ -44,5 +44,6 @@ void algo(t_stack *a, t_stack *b, t_data *data);
 void post_processing(t_data *data);
 int compare(const void *a, const void *b);
 int find_median(t_stack *a);
+void algo_b(t_stack *a, t_stack *b, t_data *data);
 
 #endif

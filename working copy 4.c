@@ -156,7 +156,7 @@ int is_sorted(t_stack *a)
 
     while (current->next != NULL)
     {
-        if (*(int *)current->content > *(int *)current->next->content)
+        if (*(int *)current->content < *(int *)current->next->content)
         {
             // printf("not sorted\n");
             return (0);  // Not sorted
@@ -231,116 +231,129 @@ int is_sorted(t_stack *a)
 
 // get max and min before algo
 
-static int get_max_bits(t_list *stack)
+void algo_b(t_stack *a, t_stack *b, t_data *data)
 {
-    t_list *head;
-    int max;
-    int max_bits;
-
-    head = stack;
-    max = *(int *)head->content;
-    max_bits = 0;
-    while (head)
+    if(is_sorted(b))
     {
-        if (*(int *)head->content > max)
-            max = *(int *)head->content;
-        head = head->next;
-    }
-    while ((max >> max_bits) != 0)
-        max_bits++;
-    return max_bits;
-}
-
-static int get_min_value(t_list *stack)
-{
-    t_list *head;
-    int min;
-
-    head = stack;
-    min = *(int *)head->content;
-    while (head)
-    {
-        if (*(int *)head->content < min)
-            min = *(int *)head->content;
-        head = head->next;
-    }
-    return min;
-}
-
-static t_list *get_next_min(t_list *stack)
-{
-    t_list *head;
-    t_list *min;
-    int has_min;
-
-    min = NULL;
-    has_min = 0;
-    head = stack;
-    while (head)
-    {
-        if ((head->index == -1) && (!has_min || *(int *)head->content < *(int *)min->content))
+        while(b->top != NULL)
         {
-            min = head;
-            has_min = 1;
+            push(a, b, 'a', data);
         }
-        head = head->next;
     }
-    return min;
-}
-
-void normalize_stack_range(t_stack *stack)
-{
-    t_list *head;
-    int index;
-    int size;
-
-    size = ft_lstsize(stack->top);
-    head = stack->top;
-    while (head)
+    int c = 0;
+        //     while (b->top != NULL)
+        // {
+        //     printf("%d",*(int *)b->top->content);
+        //     if( *(int *)b->top->content != 12)
+        //         rotate(b, "rb", 1, data);
+        //     if(*(int *)b->top->content == 12)
+        //     {
+        //         push(a, b, 'a', data);
+        //         break;
+        //     }
+        // }
+   while(b->top != NULL)
     {
-        head->index = -1;
-        head = head->next;
+        // Check if current b->top should be inserted at current position in a
+        if (a->top == NULL || *(int *)b->top->content > *(int *)a->top->content)
+        {
+            printf("%d\n", *(int *)b->top->content);
+            printf("test1\n");
+            push(a, b, 'a', data);
+            continue;
+        }
+        // If we have more than one element in b, check if next element is better
+        if (b->top->next != NULL &&
+            *(int *)b->top->next->content < *(int *)b->top->content)
+        {
+            printf("test2\n");
+            swap(b, "sb", 1, data);
+            continue;
+        }
+        printf("test3\n");
+        // If no better option, rotate a
+        rotate(a, "ra", 1, data);
+        c++;
     }
-
-    index = 0;
-    head = get_next_min(stack->top);
-    while (head)
+        while (c != 0)
     {
-        head->index = index; // Set the index
-        *(int *)head->content = index++;
-        head = get_next_min(stack->top);
+        r_rotate(a, "rra", 1, data);
+        c--;
     }
 }
 
 void algo(t_stack *a, t_stack *b, t_data *data)
 {
-    int i;
-    int j;
-    int size;
-    int max_bits;
-
-    // Normalize the stack values to the range 0 to stack size - 1
-    normalize_stack_range(a);
-
-    i = 0;
-    size = ft_lstsize(a->top);
-    max_bits = get_max_bits(a->top);
-    while (i < max_bits)
+	int max = 1;
+	int min = 100;
+    int c = 0;
+	int start = *(int *)a->top->content;
+	if (is_sorted(a)) // Check if already sorted
+        return;
+    while(a->top != NULL)
     {
-        j = 0;
-        while (j++ < size)
+        if(*(int*)a->top->content != max)
+            push(a, b, 'b', data);
+        else if(*(int*)a->top->content == max)
         {
-            if (((*(int *)a->top->content >> i) & 1) == 1)
-                rotate(a, "ra", 1, data);
-            else
-                push(a, b, 'b', data);
+            rotate(a, "ra", 1, data);
+            push(a, b, 'b', data);
         }
-        while (ft_lstsize(b->top) != 0)
-            push(a, b, 'a', data);
-        if (is_sorted(a))
-            break;
-        i++;
     }
+    //     while (a->top != NULL)
+    //     {
+    //         printf("%d",*(int *)a->top->content);
+    //         if( *(int *)a->top->content != min)
+    //             rotate(a, "ra", 1, data);
+    //         if(*(int *)a->top->content == min)
+    //         {
+    //             push(a, b, 'b', data);
+    //             break;
+    //         }
+    //     }
+    // while(a->top != NULL)
+    // {
+    //     // Check if current b->top should be inserted at current position in a
+    //     if (b->top == NULL || *(int *)a->top->content > *(int *)b->top->content)
+    //     {
+    //         printf("1\n");
+    //         push(a, b, 'b', data);
+    //         continue;
+    //     }
+    //     // If we have more than one element in b, check if next element is better
+    //     if (a->top->next != NULL &&
+    //         *(int *)a->top->next->content < *(int *)a->top->content)
+    //     {
+    //         printf("2\n");
+    //         swap(a, "sa", 1, data);
+    //         continue;
+    //     }
+    //     printf("3\n");
+    //     // If no better option, rotate a
+    //     rotate(b, "rb", 1, data);
+    //     c++;
+    // }
+    // while (c != 0)
+    // {
+    //     r_rotate(b, "rrb", 1, data);
+    //     c--;
+    // }
+    // if(*(int*)a->top->content != min)
+    //         push(a, b, 'b', data);
+    // push(a, b, 'b', data);
+                printf("stack b from top = ");
+                print_stack(b);
+                int i = 0;
+    algo_b(a, b, data);
+    if (is_sorted(a))
+        return ;
+    push(a, b, 'b', data);
+    algo_b(a, b, data);
+                printf("stack a from top = ");
+                print_stack(a);
+    // Final cleanup if needed
+    if (!is_sorted(a))
+        algo(a, b, data);
 }
 
 void post_processing(t_data *data)
@@ -380,9 +393,8 @@ int main(int ac, char **av)
     data.operations = ft_strdup("");
     check_args(ac, av, &a);
 
-    if(!is_sorted(&a))
-        algo(&a,&b, &data);
-    // post_processing(&data);
+    algo(&a,&b, &data);
+    post_processing(&data);
     printf("%s",data.operations);
                 printf("stack a from top = ");
                 print_stack(&a);

@@ -156,7 +156,7 @@ int is_sorted(t_stack *a)
 
     while (current->next != NULL)
     {
-        if (*(int *)current->content > *(int *)current->next->content)
+        if (*(int *)current->content < *(int *)current->next->content)
         {
             // printf("not sorted\n");
             return (0);  // Not sorted
@@ -251,6 +251,47 @@ static int get_max_bits(t_list *stack)
     return max_bits;
 }
 
+static int get_max_value(t_list *stack)
+{
+    t_list *head;
+    int max;
+
+    head = stack;
+    max = *(int *)head->content;
+    while (head)
+    {
+        if (*(int *)head->content > max)
+            max = *(int *)head->content;
+        head = head->next;
+    }
+    return max;
+}
+
+void normalize_stack_range(t_stack *stack)
+{
+    t_list *current;
+    int min_value, max_value, size;
+    double scale;
+
+    // Find the minimum and maximum values in the stack
+    min_value = get_min_value(stack->top);
+    max_value = get_max_value(stack->top);
+
+    // Calculate the size of the stack
+    size = ft_lstsize(stack->top);
+
+    // Calculate the scale factor
+    scale = (double)(size - 1) / (max_value - min_value);
+
+    // Normalize the stack values
+    current = stack->top;
+    while (current)
+    {
+        *(int *)current->content = (int)((*(int *)current->content - min_value) * scale);
+        current = current->next;
+    }
+}
+
 static int get_min_value(t_list *stack)
 {
     t_list *head;
@@ -267,48 +308,23 @@ static int get_min_value(t_list *stack)
     return min;
 }
 
-static t_list *get_next_min(t_list *stack)
+void normalize_stack(t_stack *stack, int shift)
 {
-    t_list *head;
-    t_list *min;
-    int has_min;
-
-    min = NULL;
-    has_min = 0;
-    head = stack;
-    while (head)
+    t_list *current = stack->top;
+    while (current)
     {
-        if ((head->index == -1) && (!has_min || *(int *)head->content < *(int *)min->content))
-        {
-            min = head;
-            has_min = 1;
-        }
-        head = head->next;
+        *(int *)current->content += shift;
+        current = current->next;
     }
-    return min;
 }
 
-void normalize_stack_range(t_stack *stack)
+void denormalize_stack(t_stack *stack, int shift)
 {
-    t_list *head;
-    int index;
-    int size;
-
-    size = ft_lstsize(stack->top);
-    head = stack->top;
-    while (head)
+    t_list *current = stack->top;
+    while (current)
     {
-        head->index = -1;
-        head = head->next;
-    }
-
-    index = 0;
-    head = get_next_min(stack->top);
-    while (head)
-    {
-        head->index = index; // Set the index
-        *(int *)head->content = index++;
-        head = get_next_min(stack->top);
+        *(int *)current->content -= shift;
+        current = current->next;
     }
 }
 
@@ -318,9 +334,15 @@ void algo(t_stack *a, t_stack *b, t_data *data)
     int j;
     int size;
     int max_bits;
+    int min_value;
+    int shift;
 
-    // Normalize the stack values to the range 0 to stack size - 1
-    normalize_stack_range(a);
+    // Find the minimum value in the stack
+    min_value = get_min_value(a->top);
+    shift = (min_value < 0) ? -min_value : 0;
+
+    // Normalize the stack values
+    normalize_stack(a, shift);
 
     i = 0;
     size = ft_lstsize(a->top);
@@ -341,6 +363,9 @@ void algo(t_stack *a, t_stack *b, t_data *data)
             break;
         i++;
     }
+
+    // Denormalize the stack values
+    denormalize_stack(a, shift);
 }
 
 void post_processing(t_data *data)
@@ -380,8 +405,7 @@ int main(int ac, char **av)
     data.operations = ft_strdup("");
     check_args(ac, av, &a);
 
-    if(!is_sorted(&a))
-        algo(&a,&b, &data);
+    algo(&a,&b, &data);
     // post_processing(&data);
     printf("%s",data.operations);
                 printf("stack a from top = ");
