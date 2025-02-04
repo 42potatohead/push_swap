@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 16:18:05 by ataan             #+#    #+#             */
-/*   Updated: 2025/01/14 17:05:26 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:21:48 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct s_stack
     t_list *top;
 } t_stack;
 
+
+int is_sorted(t_stack *a);
 void ft_swap_stack (t_stack *stack_x, char *op);
 void del(void *content);
 void push(t_stack *a, t_stack *b, char op, t_data *data);
