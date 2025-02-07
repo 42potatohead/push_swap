@@ -93,7 +93,7 @@ void	normalize_stack_range(t_stack *stack)
 	}
 }
 
-void	algo(t_stack *a, t_stack *b, t_data *data)
+void	algo(t_stack *a, t_stack *b)
 {
 	int	i;
 	int	j;
@@ -110,12 +110,12 @@ void	algo(t_stack *a, t_stack *b, t_data *data)
 		while (j++ < size)
 		{
 			if (((*(int *)a->top->content >> i) & 1) == 1)
-				rotate(a, "ra", 1, data);
+				rotate(a, "ra");
 			else
-				push(a, b, 'b', data);
+				push(a, b, 'b');
 		}
 		while (ft_lstsize(b->top) != 0)
-			push(a, b, 'a', data);
+			push(a, b, 'a');
 		if (is_sorted(a))
 			break ;
 		i++;

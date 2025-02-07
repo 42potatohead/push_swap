@@ -1,5 +1,5 @@
 NAME = push_swap
-SRC = push_swap.c opperations.c algorithm.c
+SRC = push_swap.c opperations.c algorithm.c utils.c sort_small.c dupes.c
 LIBFT_DIR = ./libft
 
 OBJ := $(SRC:%.c=%.o)

@@ -22,11 +22,6 @@ typedef struct s_node
 	struct s_node	*next;
 }	t_node;
 
-typedef struct s_data
-{
-	char *operations;
-} t_data;
-
 typedef struct s_stack
 {
     t_list *top;
@@ -34,18 +29,21 @@ typedef struct s_stack
 
 
 int is_sorted(t_stack *a);
-void ft_swap_stack (t_stack *stack_x, char *op);
 void del(void *content);
-void push(t_stack *a, t_stack *b, char op, t_data *data);
-void rotate(t_stack *x, char *op, int flag, t_data *data);
-void r_rotate(t_stack *x, char *op, int flag, t_data *data);
-void rr(t_stack *a, t_stack *b, t_data *data);
-void swap(t_stack *stack_x, char *op,int flag, t_data *data);
-void ss(t_stack *a, t_stack *b, t_data *data);
-void algo(t_stack *a, t_stack *b, t_data *data);
-void post_processing(t_data *data);
-int compare(const void *a, const void *b);
-int find_median(t_stack *a);
-void algo_b(t_stack *a, t_stack *b, t_data *data);
+void push(t_stack *a, t_stack *b, char op);
+void rotate(t_stack *x, char *op);
+void algo(t_stack *a, t_stack *b);
+void	init_stack(t_stack *stack_x, int ac, char **av);
+void multi_args(t_stack *stack_x, int ac, char **av);
+void	clean_array(char **arr);
+void	check_av(char **av);
+void	check_size(char *snum);
+void	ft_close(char *err, t_stack *a);
+void	r_rotate(t_stack *x, char *op);
+void	swap(t_stack *x, char *op);
+void sort_three(t_stack *stack_x);
+void	sort_five(t_stack *a, t_stack *b);
+void	normalize_stack_range(t_stack *stack);
+void has_duplicates(t_stack *stack);
 
 #endif
