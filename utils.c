@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/07 12:57:29 by zabu-bak          #+#    #+#             */
+/*   Updated: 2025/02/07 13:01:05 by zabu-bak         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 void	check_size(char *snum)
@@ -54,11 +66,12 @@ void	clean_array(char **arr)
 		free(arr);
 	}
 }
-void multi_args(t_stack *stack_x, int ac, char **av)
+
+void	multi_args(t_stack *stack_x, int ac, char **av)
 {
-	int		*k_ptr;
-	int		k;
-	int		i;
+	int	*k_ptr;
+	int	k;
+	int	i;
 
 	i = 1;
 	while (av[i])
@@ -77,7 +90,6 @@ void	init_stack(t_stack *stack_x, int ac, char **av)
 	int		i;
 	int		nbr;
 	int		*nbr_ptr;
-
 
 	i = 0;
 	if (ac == 2)

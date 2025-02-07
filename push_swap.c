@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:15:06 by zabu-bak          #+#    #+#             */
-/*   Updated: 2025/02/04 16:30:06 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/02/07 13:23:07 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	check_args(int ac, char **av, t_stack *stack_x)
 	check_av(av);
 	init_stack(stack_x, ac, av);
 }
+
 void	del(void *content)
 {
 	if (content)
@@ -65,17 +66,20 @@ int	is_sorted(t_stack *a)
 
 int	main(int ac, char **av)
 {
-    t_stack a = {NULL};
-    t_stack b = {NULL};
+	t_stack	a = {NULL};
+	t_stack	b = {NULL};
+	t_data data;
 	int		i;
 
+	// a = {NULL};
+	// b = {NULL};
 	i = 0;
 	check_args(ac, av, &a);
 	has_duplicates(&a);
 	if (!is_sorted(&a) && ft_lstsize(a.top) == 3)
 		sort_three(&a);
 	if (!is_sorted(&a) && ft_lstsize(a.top) == 5)
-		sort_five(&a, &b);
+		sort_five(&a, &b, &data);
 	else if (!is_sorted(&a))
 		algo(&a, &b);
 	ft_printf("stack a from top = ");

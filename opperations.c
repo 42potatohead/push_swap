@@ -40,10 +40,12 @@ void	push(t_stack *a, t_stack *b, char op)
 
 void	rotate(t_stack *x, char *op)
 {
+	t_list	*last;
+
 	if (x->top == NULL || x->top->next == NULL)
 		return ;
 	ft_printf("%s\n", op);
-	t_list *last = x->top;
+	last = x->top;
 	while (last->next)
 		last = last->next;
 	last->next = x->top;
@@ -54,11 +56,12 @@ void	rotate(t_stack *x, char *op)
 void	r_rotate(t_stack *x, char *op)
 {
 	t_list	*tmp;
+	t_list	*last;
 
 	if (x->top == NULL || x->top->next == NULL)
 		return ;
 	ft_printf("%s\n", op);
-	t_list *last = x->top;
+	last = x->top;
 	while (last->next->next)
 		last = last->next;
 	tmp = last->next;
