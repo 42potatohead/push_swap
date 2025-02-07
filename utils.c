@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 12:57:29 by zabu-bak          #+#    #+#             */
-/*   Updated: 2025/02/07 13:01:05 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:44:23 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,24 @@ void	check_size(char *snum)
 
 	i = 0;
 	num = 0;
+	if (snum[0] == '-' && snum[1] == '\0')
+	{
+		ft_printf("Error\n");
+		exit(EXIT_FAILURE);
+	}
 	while (snum[i])
 	{
 		num = num * 10 + (snum[i] - '0');
+		if (i > 11)
+		{
+			ft_printf("Error\n");
+			exit(EXIT_FAILURE);
+		}
 		i++;
 	}
-	if (num >= INT_MAX)
+	if (num > INT_MAX || num < INT_MIN)
 	{
-		ft_printf("Error\nNumber is larger than int max\n");
+		ft_printf("Error\n");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -67,7 +77,7 @@ void	clean_array(char **arr)
 	}
 }
 
-void	multi_args(t_stack *stack_x, int ac, char **av)
+void	init_stack(t_stack *stack_x, char **av)
 {
 	int	*k_ptr;
 	int	k;
@@ -82,29 +92,4 @@ void	multi_args(t_stack *stack_x, int ac, char **av)
 		ft_lstadd_back(&stack_x->top, ft_lstnew(k_ptr));
 		i++;
 	}
-}
-
-void	init_stack(t_stack *stack_x, int ac, char **av)
-{
-	char	**nbr_array;
-	int		i;
-	int		nbr;
-	int		*nbr_ptr;
-
-	i = 0;
-	if (ac == 2)
-	{
-		nbr_array = ft_split(av[1], ' ');
-		while (nbr_array[i])
-		{
-			nbr = ft_atoi(nbr_array[i]);
-			nbr_ptr = malloc(sizeof(int));
-			*nbr_ptr = nbr;
-			ft_lstadd_back(&stack_x->top, ft_lstnew(nbr_ptr));
-			i++;
-		}
-		clean_array(nbr_array);
-	}
-	else
-		multi_args(stack_x, ac, av);
 }

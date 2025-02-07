@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 12:57:26 by zabu-bak          #+#    #+#             */
-/*   Updated: 2025/02/07 14:20:18 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:32:24 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,22 @@ void	sort_three_decending(t_stack *stack_x)
 	a = *(int *)current->content;
 	b = *(int *)current->next->content;
 	c = *(int *)current->next->next->content;
-	if (a < b && b > c && a < c)
-		swap(stack_x, "sa");
+	if (a < b && b > c && a > c)
+		swap(stack_x, "sb");
 	else if (a < b && b < c && a < c)
 	{
-		swap(stack_x, "sa");
-		r_rotate(stack_x, "rra");
+		swap(stack_x, "sb");
+		r_rotate(stack_x, "rrb");
 	}
 	else if (a < b && b > c && a < c)
-		rotate(stack_x, "ra");
+		rotate(stack_x, "rb");
 	else if (a > b && b < c && a > c)
 	{
-		swap(stack_x, "sa");
-		rotate(stack_x, "ra");
+		swap(stack_x, "sb");
+		rotate(stack_x, "rb");
 	}
 	else if (a > b && b < c && a < c)
-		r_rotate(stack_x, "rra");
+		r_rotate(stack_x, "rrb");
 }
 
 void	init_var(t_data *data)
@@ -76,7 +76,7 @@ void	init_var(t_data *data)
 	data->min = 0;
 }
 
-static void sort_push(t_stack *a, t_stack *b)
+static void	sort_push(t_stack *a, t_stack *b)
 {
 	sort_three_decending(b);
 	sort_three_decending(b);
@@ -87,27 +87,20 @@ static void sort_push(t_stack *a, t_stack *b)
 
 void	sort_five(t_stack *a, t_stack *b, t_data *data)
 {
-	int flag;
-
-	flag = 0;
 	init_var(data);
 	normalize_stack_range(a);
-	while(a->top)
+	while (a->top)
 	{
-		if (*(int *)a->top->content == data->max || *(int *)a->top->content == data->min)
+		if (*(int *)a->top->content == data->max
+			|| *(int *)a->top->content == data->min)
 			rotate(a, "ra");
 		else
-			push(a,b, 'b');
+			push(a, b, 'b');
 		if (ft_lstsize(a->top) == 2)
-			break;
+			break ;
 	}
-	if (*(int *)a->top->content == data->max)
-		flag = 1;
-	else
+	if (*(int *)a->top->content != data->max)
 		rotate(a, "ra");
 	sort_push(a, b);
-	if(flag = 1)
-		r_rotate(a, "rra");
-	else
-		rotate(a, "ra");
+	r_rotate(a, "rra");
 }

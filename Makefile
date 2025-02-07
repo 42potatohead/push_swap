@@ -1,31 +1,27 @@
-NAME = push_swap
-SRC = push_swap.c opperations.c algorithm.c utils.c sort_small.c dupes.c
-LIBFT_DIR = ./libft
-
-OBJ := $(SRC:%.c=%.o)
-GNL_OBJ := $(GNL_SRC:%.c=%.o)
-PRINTF_OBJ := $(PRINTF_SRC:%.c=%.o)
-
 CC = cc
-CCFLAGS = -Wextra -Wall -Werror -L./libft -lft -g
+RM = rm -rf
+CFLAGS = -Wall -Werror -Wextra -g
+LIB = -L./libft -lft
+
+SRC = push_swap.c opperations.c algorithm.c utils.c sort_small.c dupes.c
+OBJ = $(SRC:.c=.o)
+
+NAME = push_swap
 
 all: $(NAME)
 
-$(NAME): $(OBJ) libft
-	$(CC)  $(OBJ) $(CCFLAGS) -o $(NAME)
-
-libft:
-	$(MAKE) -C $(LIBFT_DIR)
+$(NAME): $(OBJ)
+	$(MAKE) -C ./libft
+	$(CC) $(OBJ) $(LIB) -o$(NAME)
 
 clean:
-	$(MAKE) clean -C $(LIBFT_DIR)
-	rm -f $(OBJ)
+	$(RM) $(OBJ)
+	$(MAKE) clean -C ./libft
 
 fclean: clean
-	$(MAKE) fclean -C $(LIBFT_DIR)
-	make clean
-	rm -f $(NAME)
+	$(RM) $(NAME)
+	$(MAKE) fclean -C ./libft
 
-re : fclean all clean
+re: fclean $(NAME)
 
-.PHONY : all clean fclean libft
+.PHONY: all clean fclean re

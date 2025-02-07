@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:20:37 by zabu-bak          #+#    #+#             */
-/*   Updated: 2025/02/04 16:27:57 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:29:37 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,6 @@ static int	get_max_bits(t_list *stack)
 	while ((max >> max_bits) != 0)
 		max_bits++;
 	return (max_bits);
-}
-
-static int	get_min_value(t_list *stack)
-{
-	t_list	*head;
-	int		min;
-
-	head = stack;
-	min = *(int *)head->content;
-	while (head)
-	{
-		if (*(int *)head->content < min)
-			min = *(int *)head->content;
-		head = head->next;
-	}
-	return (min);
 }
 
 static t_list	*get_next_min(t_list *stack)
@@ -74,9 +58,7 @@ void	normalize_stack_range(t_stack *stack)
 {
 	t_list	*head;
 	int		index;
-	int		size;
 
-	size = ft_lstsize(stack->top);
 	head = stack->top;
 	while (head)
 	{

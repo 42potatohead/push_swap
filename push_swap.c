@@ -6,24 +6,11 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:15:06 by zabu-bak          #+#    #+#             */
-/*   Updated: 2025/02/07 13:23:07 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:45:39 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-void	print_stack(t_stack *stack_x)
-{
-	t_list	*current;
-
-	current = stack_x->top;
-	while (current)
-	{
-		ft_printf("%d ", *(int *)current->content);
-		current = current->next;
-	}
-	ft_printf("\n\n");
-}
 
 void	ft_close(char *err, t_stack *a)
 {
@@ -34,10 +21,13 @@ void	ft_close(char *err, t_stack *a)
 
 void	check_args(int ac, char **av, t_stack *stack_x)
 {
-	if (ac == 1)
+	if (ac == 1 || ac == 2)
+	{
+		ft_printf("Error\n");
 		exit(EXIT_FAILURE);
+	}
 	check_av(av);
-	init_stack(stack_x, ac, av);
+	init_stack(stack_x, av);
 }
 
 void	del(void *content)
@@ -66,26 +56,23 @@ int	is_sorted(t_stack *a)
 
 int	main(int ac, char **av)
 {
-	t_stack	a = {NULL};
-	t_stack	b = {NULL};
-	t_data data;
-	int		i;
+	t_stack	a;
+	t_stack	b;
+	t_data	data;
 
-	// a = {NULL};
-	// b = {NULL};
-	i = 0;
+	a.top = NULL;
+	b.top = NULL;
 	check_args(ac, av, &a);
 	has_duplicates(&a);
 	if (!is_sorted(&a) && ft_lstsize(a.top) == 3)
+	{
 		sort_three(&a);
+		sort_three(&a);
+	}
 	if (!is_sorted(&a) && ft_lstsize(a.top) == 5)
 		sort_five(&a, &b, &data);
 	else if (!is_sorted(&a))
 		algo(&a, &b);
-	ft_printf("stack a from top = ");
-	print_stack(&a);
-	ft_printf("stack b from top = ");
-	print_stack(&b);
 	ft_lstclear(&b.top, del);
 	ft_lstclear(&a.top, del);
 }
