@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 12:57:29 by zabu-bak          #+#    #+#             */
-/*   Updated: 2025/02/07 18:44:23 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/02/08 12:49:51 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,21 @@ void	check_size(char *snum)
 	i = 0;
 	num = 0;
 	if (snum[0] == '-' && snum[1] == '\0')
-	{
-		ft_printf("Error\n");
-		exit(EXIT_FAILURE);
-	}
+		ft_close("- Error");
+	if (snum[0] == '-')
+		i++;
+	while (snum[i] == '0')
+		i++;
+	if (i < 1)
+		if (ft_strlen(snum) > 11)
+			ft_close("number is out of INT range");
 	while (snum[i])
 	{
 		num = num * 10 + (snum[i] - '0');
-		if (i > 11)
-		{
-			ft_printf("Error\n");
-			exit(EXIT_FAILURE);
-		}
 		i++;
 	}
 	if (num > INT_MAX || num < INT_MIN)
-	{
-		ft_printf("Error\n");
-		exit(EXIT_FAILURE);
-	}
+		ft_close("number is out of INT range");
 }
 
 void	check_av(char **av)

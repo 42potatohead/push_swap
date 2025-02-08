@@ -6,16 +6,15 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:15:06 by zabu-bak          #+#    #+#             */
-/*   Updated: 2025/02/07 18:45:39 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/02/08 12:42:27 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	ft_close(char *err, t_stack *a)
+void	ft_close(char *err)
 {
 	ft_printf("%s\n", err);
-	ft_lstclear(&a->top, del);
 	exit(EXIT_FAILURE);
 }
 
@@ -63,7 +62,11 @@ int	main(int ac, char **av)
 	a.top = NULL;
 	b.top = NULL;
 	check_args(ac, av, &a);
-	has_duplicates(&a);
+	if (has_duplicates(&a) == 1)
+	{
+		ft_lstclear(&a.top, del);
+		ft_close("You have dupes sir");
+	}
 	if (!is_sorted(&a) && ft_lstsize(a.top) == 3)
 	{
 		sort_three(&a);
