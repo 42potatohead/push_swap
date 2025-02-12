@@ -6,7 +6,7 @@
 /*   By: zabu-bak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:15:06 by zabu-bak          #+#    #+#             */
-/*   Updated: 2025/02/10 13:44:09 by zabu-bak         ###   ########.fr       */
+/*   Updated: 2025/02/08 12:42:27 by zabu-bak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,13 @@ void	ft_close(char *err)
 	exit(EXIT_FAILURE);
 }
 
-void	check_args(char **av, t_stack *stack_x)
+void	check_args(int ac, char **av, t_stack *stack_x)
 {
+	if (ac == 1 || ac == 2)
+	{
+		ft_printf("Error\n");
+		exit(EXIT_FAILURE);
+	}
 	check_av(av);
 	init_stack(stack_x, av);
 }
@@ -56,13 +61,11 @@ int	main(int ac, char **av)
 
 	a.top = NULL;
 	b.top = NULL;
-	if (ac == 1)
-		return (0);
-	check_args(av, &a);
+	check_args(ac, av, &a);
 	if (has_duplicates(&a) == 1)
 	{
 		ft_lstclear(&a.top, del);
-		ft_close("Error\nDuplicates");
+		ft_close("You have dupes sir");
 	}
 	if (!is_sorted(&a) && ft_lstsize(a.top) == 3)
 	{

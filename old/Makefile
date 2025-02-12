@@ -12,7 +12,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(OBJ) $(LIB) -o $(NAME)
+	$(CC) $(OBJ) $(LIB) -o$(NAME)
 
 clean:
 	$(RM) $(OBJ)
